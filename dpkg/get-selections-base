@@ -20,5 +20,4 @@ tree						install
 vim						install
 wget						install
 whois						install
-xdm           install
 zsh						install
