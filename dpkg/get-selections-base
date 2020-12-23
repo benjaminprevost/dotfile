@@ -1,5 +1,4 @@
 atop						install
-brave-browser					install
 chromium-browser				install
 curl				install
 gcr						install
