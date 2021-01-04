@@ -1,0 +1,3 @@
+echo sway > .xsession
+update-alternatives --config x-terminal-emulator
+
