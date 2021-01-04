@@ -1,6 +1,7 @@
 atop						install
 chromium-browser				install
 curl				install
+ferm        install
 gcr						install
 git						install
 grim						install
