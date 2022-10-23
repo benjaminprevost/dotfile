@@ -1,0 +1,8 @@
+[Content]
+name = projet-ATSO
+path = /home/bprevost/Projets/ATSO
+include-files = *
+exclude-files = 
+
+[Archive]
+dest-dir = /var/backups/local/

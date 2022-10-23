@@ -1,0 +1,8 @@
+[Content]
+name = etc
+path = /etc
+include-files = *
+exclude-files = 
+
+[Archive]
+dest-dir = /var/backups/local/
