@@ -3,6 +3,7 @@
 URxvt*geometry: 74x27
 
 ! Police TTF
+#URxvt*font: xft:DejaVu Sans Mono:style=Regular:pixelsize=32:antialias=true
 URxvt*font: xft:DejaVu Sans Mono:style=Regular:pixelsize=15:antialias=true
 URxvt.lineSpace: 1
 
@@ -77,10 +78,10 @@ URxvt.iso14755_52: false
 URxvt.urgentOnBell: True
 
 ! Extension
-URxvt.perl-lib: ~/.urxvt/perl/
-URxvt.perl-ext-common: default,notify
-URxvt.perl-ext: default,matcher,url-picker
-URxvt.keysym.C-0xff0d:    perl:url-picker
+!URxvt.perl-lib: ~/.urxvt/perl/
+!URxvt.perl-ext-common: default,notify
+!URxvt.perl-ext: default,matcher,url-picker
+!URxvt.keysym.C-0xff0d:    perl:url-picker
 URxvt.urlLauncher: brave-browser
 
 URxvt.tabbed.tabbar-fg: 8

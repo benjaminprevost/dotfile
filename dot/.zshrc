@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/ben/.oh-my-zsh"
+export ZSH="/home/bprevost/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -69,10 +69,29 @@ source $ZSH/custom/plugins/zsh-syntax-highlighting
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git ssh-agent ubuntu docker nmap pep8 autopep8 pip python sudo rsync systemd tmux vim-interaction virtualenv colored-man-pages zsh-syntax-highlighting battery colorize cp github jsontools  mosh repo tig)
+plugins=(git ssh-agent ubuntu docker nmap pep8 autopep8 pip python sudo rsync systemd tmux vim-interaction virtualenv colored-man-pages zsh-syntax-highlighting battery colorize cp github jsontools mosh repo tig vagrant kubectl gcloud aws zsh-kubectx)
 # plugins=(git ssh-agent ubuntu docker nmap pep8 autopep8 pip python sudo rsync systemd tmux vagrant vim-interaction virtualenv colored-man-pages zsh-syntax-highlighting terraform terragrunt kubectl kube-ps1 aws battery colorize cp github helm jsontools lol mosh repo salt tig)
 
+zstyle :omz:plugins:ssh-agent identities id_rsa id_rsa_ben
+
 source $ZSH/oh-my-zsh.sh
+
+source ~/.oh-my-zsh/plugins/zsh-kubectl-prompt/zsh-kubectl-prompt.plugin.zsh
+
+function kubecon () {
+  if [[ $KUBECON -eq 1 ]]; then
+    KUBECON=0
+  else
+    KUBECON=1
+  fi
+
+  if [[ $KUBECON -eq 1 ]] ; then
+    RPROMPT='%{$fg[blue]%}($ZSH_KUBECTL_PROMPT)%{$reset_color%}'
+  else
+    RPROMPT=''
+  fi
+}
+
 
 # User configuration
 
@@ -107,6 +126,8 @@ alias mount="grc mount"
 alias tail="grc tail"
 alias ps="grc ps"
 alias ip="ip -c"
+alias cat="/usr/bin/batcat -pp"
+alias pcat="fzf --preview 'batcat --color=always --style=numbers --line-range=:500 {}'"
 alias myip="curl -s https://www.onyphe.io/api/myip | jq .myip"
 
 alias pbcopy='xclip -selection clipboard'
@@ -125,7 +146,38 @@ function myssh () {
     fi
 }
 
+function kube-monit () {
+  tmux new-session -d 'kubectl --namespace ingress-nginx logs -f -l app.kubernetes.io/name=ingress-nginx'
+  tmux split-window -v 'watch kubectl top pod'
+  tmux split-window -h 'watch kubectl top node'
+  tmux split-window -h 'watch kubectl get hpa'
+  tmux -2 attach-session -d
+
+}
+
+function mfa () {
+
+  MFA_FILE=$HOME/.mfa
+
+  len=($(yq -r ".mfa | keys[]" $MFA_FILE | xargs))
+
+  for item in $len
+  do
+    secret=$(yq -r ".mfa[$item]" .mfa)
+    
+    echo $secret | jq -r .name
+    oathtool --totp --base32 $(echo $secret | jq -r .secret)
+    echo 
+    
+  done
+}
+
+
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 #export PATH="$PATH:$HOME/.rvm/bin:$HOME/Repo/go/bin"
 #export GOPATH=$HOME/Repo/go
 #source /usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh
+
+export HEDGEDOC_SERVER="https://doc.synalabs.cloud/"
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+export PATH="$HOME/bin:$PATH"

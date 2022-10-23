@@ -23,6 +23,9 @@ call pymode#default("g:pymode_syntax_highlight_async_await", g:pymode_syntax_all
 " Highlight '=' operator
 call pymode#default('g:pymode_syntax_highlight_equal_operator', g:pymode_syntax_all)
 
+" Highlight ':=' operator
+call pymode#default('g:pymode_syntax_highlight_walrus_operator', g:pymode_syntax_all)
+
 " Highlight '*' operator
 call pymode#default('g:pymode_syntax_highlight_stars_operator', g:pymode_syntax_all)
 
@@ -62,7 +65,6 @@ call pymode#default('g:pymode_syntax_slow_sync', 1)
 
 " }}}
 
-
 " For version 5.x: Clear all syntax items
 if version < 600
     syntax clear
@@ -92,7 +94,7 @@ endif
     syn match pythonClassParameters "[^,\*]*" contained contains=pythonBuiltin,pythonBuiltinObj,pythonBuiltinType,pythonExtraOperatorpythonStatement,pythonBrackets,pythonString,pythonComment skipwhite
 
     syn keyword pythonRepeat        for while
-    syn keyword pythonConditional   if elif else
+    syn keyword pythonConditional   if elif else match case
     syn keyword pythonInclude       import from
     syn keyword pythonException     try except finally
     syn keyword pythonOperator      and in is not or
@@ -115,26 +117,27 @@ endif
         syn match pythonExtraOperator "\%(=\)"
     endif
 
+    if g:pymode_syntax_highlight_walrus_operator
+        syn match pythonExtraOperator "\%(:=\)"
+    endif
+
     if g:pymode_syntax_highlight_stars_operator
         syn match pythonExtraOperator "\%(\*\|\*\*\)"
     endif
-    
+
     if g:pymode_syntax_highlight_self
         syn keyword pythonSelf self cls
     endif
 
 " }}}
 
-
 " Decorators {{{
 " ==============
 
     syn match   pythonDecorator "@" display nextgroup=pythonDottedName skipwhite
     syn match   pythonDottedName "[a-zA-Z_][a-zA-Z0-9_]*\(\.[a-zA-Z_][a-zA-Z0-9_]*\)*" display contained
-    syn match   pythonDot        "\." display containedin=pythonDottedName
 
 " }}}
-
 
 " Comments {{{
 " ============
@@ -145,7 +148,6 @@ endif
     syn keyword pythonTodo      TODO FIXME XXX contained
 
 " }}}
-
 
 " Errors {{{
 " ==========
@@ -166,7 +168,6 @@ endif
     endif
 
 " }}}
-
 
 " Strings {{{
 " ===========
@@ -250,16 +251,16 @@ endif
 " Numbers {{{
 " ===========
 
-    syn match   pythonHexError  "\<0[xX]\x*[g-zG-Z]\x*[lL]\=\>" display
-    syn match   pythonHexNumber "\<0[xX]\x\+[lL]\=\>" display
-    syn match   pythonOctNumber "\<0[oO]\o\+[lL]\=\>" display
-    syn match   pythonBinNumber "\<0[bB][01]\+[lL]\=\>" display
-    syn match   pythonNumber    "\<\d\+[lLjJ]\=\>" display
-    syn match   pythonFloat "\.\d\+\([eE][+-]\=\d\+\)\=[jJ]\=\>" display
-    syn match   pythonFloat "\<\d\+[eE][+-]\=\d\+[jJ]\=\>" display
-    syn match   pythonFloat "\<\d\+\.\d*\([eE][+-]\=\d\+\)\=[jJ]\=" display
-    syn match   pythonOctError  "\<0[oO]\=\o*[8-9]\d*[lL]\=\>" display
-    syn match   pythonBinError  "\<0[bB][01]*[2-9]\d*[lL]\=\>" display
+    syn match   pythonHexError  "\<0[xX][0-9a-fA-F_]*[g-zG-Z][0-9a-fA-F_]*[lL]\=\>" display
+    syn match   pythonHexNumber "\<0[xX][0-9a-fA-F_]*[0-9a-fA-F][0-9a-fA-F_]*[lL]\=\>" display
+    syn match   pythonOctNumber "\<0[oO][0-7_]*[0-7][0-7_]*[lL]\=\>" display
+    syn match   pythonBinNumber "\<0[bB][01_]*[01][01_]*[lL]\=\>" display
+    syn match   pythonNumber    "\<[0-9][0-9_]*[lLjJ]\=\>" display
+    syn match   pythonFloat "\.[0-9_]*[0-9][0-9_]*\([eE][+-]\=[0-9_]*[0-9][0-9_]*\)\=[jJ]\=\>" display
+    syn match   pythonFloat "\<[0-9][0-9_]*[eE][+-]\=[0-9_]\+[jJ]\=\>" display
+    syn match   pythonFloat "\<[0-9][0-9_]*\.[0-9_]*\([eE][+-]\=[0-9_]*[0-9][0-9_]*\)\=[jJ]\=" display
+    syn match   pythonOctError  "\<0[oO]\=[0-7_]*[8-9][0-9_]*[lL]\=\>" display
+    syn match   pythonBinError  "\<0[bB][01_]*[2-9][0-9_]*[lL]\=\>" display
 
 " }}}
 
@@ -268,26 +269,29 @@ endif
 
     " Builtin objects and types
     if g:pymode_syntax_builtin_objs
-        syn keyword pythonBuiltinObj True False Ellipsis None NotImplemented
-        syn keyword pythonBuiltinObj __debug__ __doc__ __file__ __name__ __package__
+        " True, False, Ellipsis, and None are in fact keywords.
+        syn keyword pythonBuiltinObj True False Ellipsis None
+        syn keyword pythonBuiltinObj NotImplemented
+        syn keyword pythonBuiltinObj __debug__ __doc__ __file__ __name__ __package__ __loader__
+        syn keyword pythonBuiltinObj __spec__ __cached__ __annotations__
     endif
-    
-    if g:pymode_syntax_builtin_types    
+
+    if g:pymode_syntax_builtin_types
         syn keyword pythonBuiltinType type object
-        syn keyword pythonBuiltinType str basestring unicode buffer bytearray bytes chr unichr
-        syn keyword pythonBuiltinType dict int long bool float complex set frozenset list tuple
-        syn keyword pythonBuiltinType file super
+        syn keyword pythonBuiltinType str bytearray bytes chr
+        syn keyword pythonBuiltinType dict int bool float complex set frozenset list tuple
+        syn keyword pythonBuiltinType super
     endif
 
     " Builtin functions
     if g:pymode_syntax_builtin_funcs
-        syn keyword pythonBuiltinFunc   __import__ abs all any apply
-        syn keyword pythonBuiltinFunc   bin callable classmethod cmp coerce compile
+        syn keyword pythonBuiltinFunc   __import__ abs all any
+        syn keyword pythonBuiltinFunc   bin callable classmethod compile
         syn keyword pythonBuiltinFunc   delattr dir divmod enumerate eval execfile filter
         syn keyword pythonBuiltinFunc   format getattr globals locals hasattr hash help hex id
-        syn keyword pythonBuiltinFunc   input intern isinstance issubclass iter len map max min
-        syn keyword pythonBuiltinFunc   next oct open ord pow property range xrange
-        syn keyword pythonBuiltinFunc   raw_input reduce reload repr reversed round setattr
+        syn keyword pythonBuiltinFunc   input isinstance issubclass iter len map max min
+        syn keyword pythonBuiltinFunc   next oct open ord pow property range
+        syn keyword pythonBuiltinFunc   repr reversed round setattr
         syn keyword pythonBuiltinFunc   slice sorted staticmethod sum vars zip
 
         if g:pymode_syntax_print_as_function
@@ -298,29 +302,34 @@ endif
 
     " Builtin exceptions and warnings
     if g:pymode_syntax_highlight_exceptions
-        syn keyword pythonExClass   BaseException
-        syn keyword pythonExClass   Exception StandardError ArithmeticError
-        syn keyword pythonExClass   LookupError EnvironmentError
-        syn keyword pythonExClass   AssertionError AttributeError BufferError EOFError
-        syn keyword pythonExClass   FloatingPointError GeneratorExit IOError
-        syn keyword pythonExClass   ImportError IndexError KeyError
-        syn keyword pythonExClass   KeyboardInterrupt MemoryError NameError
+        syn keyword pythonExClass   BaseException Exception ArithmeticError
+        syn keyword pythonExClass   BufferError LookupError
+        syn keyword pythonExClass   AssertionError AttributeError EOFError
+        syn keyword pythonExClass   FloatingPointError GeneratorExit
+        syn keyword pythonExClass   ImportError ModuleNotFoundError IndexError
+        syn keyword pythonExClass   KeyError KeyboardInterrupt MemoryError NameError
         syn keyword pythonExClass   NotImplementedError OSError OverflowError
-        syn keyword pythonExClass   ReferenceError RuntimeError StopIteration
-        syn keyword pythonExClass   SyntaxError IndentationError TabError
+        syn keyword pythonExClass   RecursionError ReferenceError RuntimeError StopIteration
+        syn keyword pythonExClass   StopAsyncIteration SyntaxError IndentationError TabError
         syn keyword pythonExClass   SystemError SystemExit TypeError
         syn keyword pythonExClass   UnboundLocalError UnicodeError
         syn keyword pythonExClass   UnicodeEncodeError UnicodeDecodeError
-        syn keyword pythonExClass   UnicodeTranslateError ValueError VMSError
-        syn keyword pythonExClass   WindowsError ZeroDivisionError
-        syn keyword pythonExClass   Warning UserWarning BytesWarning DeprecationWarning
-        syn keyword pythonExClass   PendingDepricationWarning SyntaxWarning
-        syn keyword pythonExClass   RuntimeWarning FutureWarning
-        syn keyword pythonExClass   ImportWarning UnicodeWarning
+        syn keyword pythonExClass   UnicodeTranslateError ValueError
+        syn keyword pythonExClass   ZeroDivisionError EnvironmentError IOError
+        syn keyword pythonExClass   WindowsError
+        syn keyword pythonExClass   BlockingIOError ChildProcessError ConnectionError
+        syn keyword pythonExClass   BrokenPipeError ConnectionAbortedError
+        syn keyword pythonExClass   ConnectionRefusedError ConnectionResetError
+        syn keyword pythonExClass   FileExistsError FileNotFoundError InterruptedError
+        syn keyword pythonExClass   IsADirectoryError NotADirectoryError PermissionError
+        syn keyword pythonExClass   ProcessLookupError TimeoutError
+        syn keyword pythonExClass   Warning UserWarning DeprecationWarning PendingDeprecationWarning
+        syn keyword pythonExClass   SyntaxWarning RuntimeWarning FutureWarning
+        syn keyword pythonExClass   ImportWarning UnicodeWarning EncodingWarning
+        syn keyword pythonExClass   BytesWarning ResourceWarning
     endif
 
 " }}}
-
 
 if g:pymode_syntax_slow_sync
     syn sync minlines=2000
@@ -355,7 +364,6 @@ endif
 
     hi def link  pythonDecorator    Define
     hi def link  pythonDottedName   Function
-    hi def link  pythonDot          Normal
 
     hi def link  pythonComment      Comment
     hi def link  pythonCoding       Special
