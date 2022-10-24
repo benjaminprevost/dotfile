@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/bprevost/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -62,21 +62,21 @@ ZSH_THEME="robbyrussell"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
-source $ZSH/custom/plugins/zsh-syntax-highlighting
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git ssh-agent ubuntu docker nmap pep8 autopep8 pip python sudo rsync systemd tmux vim-interaction virtualenv colored-man-pages zsh-syntax-highlighting battery colorize cp github jsontools mosh repo tig vagrant kubectl gcloud aws zsh-kubectx)
+
+plugins=(git ssh-agent ubuntu docker nmap pep8 autopep8 pip python sudo rsync systemd tmux vim-interaction virtualenv colored-man-pages battery colorize cp github jsontools mosh repo tig vagrant kubectl gcloud aws)
+
 # plugins=(git ssh-agent ubuntu docker nmap pep8 autopep8 pip python sudo rsync systemd tmux vagrant vim-interaction virtualenv colored-man-pages zsh-syntax-highlighting terraform terragrunt kubectl kube-ps1 aws battery colorize cp github helm jsontools lol mosh repo salt tig)
 
-zstyle :omz:plugins:ssh-agent identities id_rsa id_rsa_ben
+zstyle :omz:plugins:ssh-agent identities id_rsa
 
 source $ZSH/oh-my-zsh.sh
-
-source ~/.oh-my-zsh/plugins/zsh-kubectl-prompt/zsh-kubectl-prompt.plugin.zsh
 
 function kubecon () {
   if [[ $KUBECON -eq 1 ]]; then
@@ -178,6 +178,6 @@ function mfa () {
 #export GOPATH=$HOME/Repo/go
 #source /usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh
 
-export HEDGEDOC_SERVER="https://doc.synalabs.cloud/"
+export HEDGEDOC_SERVER="https://docs.prevo.st/"
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
