@@ -22,3 +22,8 @@ vim
 wget						
 whois						
 zsh						
+bat
+grc
+python-is-python3
+python3-pip
+zsh-syntax-highlighting
