@@ -27,8 +27,8 @@ def refresh():
         ssid = check_output("iwgetid -r", shell=True).strip().decode("utf-8")
         for iface in interface.keys():
             try:
-                freq = check_output("iwconfig wlp2s0 | grep Frequency | cut -d: -f3 | cut -d\" \" -f1-2", stderr=None, shell=True).strip().decode("utf-8")
-                signal = check_output("iwconfig wlp2s0 | grep Signal | cut -d= -f3", stderr=None, shell=True).strip().decode("utf-8")
+                freq = check_output("iwconfig wlp60s0 | grep Frequency | cut -d: -f3 | cut -d\" \" -f1-2", stderr=None, shell=True).strip().decode("utf-8")
+                signal = check_output("iwconfig wlp60s0 | grep Signal | cut -d= -f3", stderr=None, shell=True).strip().decode("utf-8")
                 ap_info = signal + '❙' + freq
             except:
                 ap_info = "No data"
