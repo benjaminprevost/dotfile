@@ -16,6 +16,7 @@ stterm
 sway						
 swayidle
 swaylock					
+waybar
 tmux						
 tree						
 vim						
@@ -29,3 +30,4 @@ python3-pip
 zsh-syntax-highlighting
 libasound2-dev
 mplayer
+fonts-font-awesome
