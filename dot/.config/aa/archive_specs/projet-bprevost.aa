@@ -1,0 +1,8 @@
+[Content]
+name = projet-bprevost
+path = /home/bprevost/Projets/bprevost
+include-files = *
+exclude-files = 
+
+[Archive]
+dest-dir = /var/backups/local/

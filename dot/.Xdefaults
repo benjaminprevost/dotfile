@@ -1,0 +1,90 @@
+
+! Taille par défaut
+URxvt*geometry: 74x27
+
+! Police TTF
+#URxvt*font: xft:DejaVu Sans Mono:style=Regular:pixelsize=32:antialias=true
+URxvt*font: xft:DejaVu Sans Mono:style=Regular:pixelsize=15:antialias=true
+URxvt.lineSpace: 1
+
+! Taille du buffer et barre de défilement
+URxvt*saveLines: 10000
+URxvt*scrollBar: true
+URxvt*scrollBar_right: true
+URxvt*scrollColor: #c2dd5a
+URxvt*scrollBar_floating: true
+URxvt*scrollstyle: plain
+URxvt*scrollTtyOutput: false
+URxvt*scrollWithBuffer: true
+URxvt*scrollTtyKeypress: true
+
+! Curseur et nom du terminal
+URxvt*cursorColor: white
+URxvt.cursorBlink: true
+URxvt*termName:rxvt-unicode-256color
+
+! Couleurs (cest la palette Tango)
+!URxvt*foreground: #f2f2f2
+URxvt*foreground: #ffffff
+URxvt*background: #000000
+URxvt*color0: #101010
+URxvt*color1: #f13a21
+URxvt*color2: #93f91d
+URxvt*color3: #ffd00a
+URxvt*color4: #004f9e
+URxvt*color5: #ec0048
+URxvt*color6: #2aa7e7
+URxvt*color7: #f2f2f2
+URxvt*color8: #1d202f
+URxvt*color9: #ff361e
+URxvt*color10: #ffc005
+URxvt*color11: #93ff00
+URxvt*color12: #0071ff
+URxvt*color13: #ef0051
+URxvt*color14: #4bb8fd
+URxvt*color15: #a020f0
+
+! Key mapping
+URxvt.keysym.S-Up: \033[1;2A
+URxvt.keysym.S-Down: \033[1;2B
+URxvt.keysym.S-Right: \033[1;2C
+URxvt.keysym.S-Left: \033[1;2D
+URxvt.keysym.S-Home: \033[1;2H
+URxvt.keysym.S-End: \033[1;2F
+URxvt.keysym.C-Up: \033[1;5A
+URxvt.keysym.C-Down: \033[1;5B
+URxvt.keysym.C-Right: \033[1;5C
+URxvt.keysym.C-Left: \033[1;5D
+! URxvt.keysym.C-S-Up: \033[1;6A
+! URxvt.keysym.C-S-Down: \033[1;6B
+! URxvt.keysym.C-S-Right: \033[1;6C
+! URXvt.keysym.C-S-Left: \033[1;6D
+
+
+URxvt*keysym.Home: \033[1~
+URxvt*keysym.End: \033[4~
+
+URxvt.keysym.Control-Tab: \033[27;5;9~
+URxvt.keysym.Control-Shift-ISO_Left_Tab: \033[27;6;9~
+
+! Utilisation de la vraie transparence
+urxvt*depth: 32
+urxvt*bg: rgba:0000/0000/0000/dddd
+
+! Désactiver lencodage manuel
+URxvt.iso14755: false
+URxvt.iso14755_52: false 
+
+URxvt.urgentOnBell: True
+
+! Extension
+!URxvt.perl-lib: ~/.urxvt/perl/
+!URxvt.perl-ext-common: default,notify
+!URxvt.perl-ext: default,matcher,url-picker
+!URxvt.keysym.C-0xff0d:    perl:url-picker
+URxvt.urlLauncher: brave-browser
+
+URxvt.tabbed.tabbar-fg: 8
+URxvt.tabbed.tabbar-bg: 0
+URxvt.tabbed.tab-fg: 24
+URxvt.tabbed.tab-bg: 0

@@ -1,0 +1,9 @@
+[Content]
+name = projet-Bois
+path = /home/bprevost/Projets/Bois
+include-files = *
+exclude-files = 
+
+[Archive]
+dest-dir = /var/backups/local/
+
