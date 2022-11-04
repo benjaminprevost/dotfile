@@ -1,24 +1,31 @@
-atop						install
-chromium-browser				install
-curl				install
-ferm        install
-gcr						install
-git						install
-grim						install
-htop						install
-jq						install
-locate						install
-lsof						install
-ltrace						install
-qpdf						install
-rxvt-unicode					install
-stterm            install
-sway						install
-swayidle					install
-swaylock					install
-tmux						install
-tree						install
-vim						install
-wget						install
-whois						install
-zsh						install
+atop						
+chromium-browser				
+curl				
+ferm
+gcr						
+git						
+grim						
+htop						
+jq						
+locate						
+lsof						
+ltrace						
+qpdf						
+rxvt-unicode					
+stterm
+sway						
+swayidle
+swaylock					
+tmux						
+tree						
+vim						
+wget						
+whois						
+zsh						
+bat
+grc
+python-is-python3
+python3-pip
+zsh-syntax-highlighting
+libasound2-dev
+mplayer
