@@ -129,3 +129,12 @@ au bufNewFile *.sh 0r ~/.vim/templates/sh
 " Json
 
 com! FormatJSON %!python -m json.tool
+
+
+if &diff
+  syntax off                      " option : supprime la coloration syntaxique pendant le diff
+  highlight DiffAdd    cterm=NONE ctermfg=black ctermbg=green  gui=NONE guifg=#000000 guibg=#a6e3a1
+  highlight DiffDelete cterm=NONE ctermfg=black ctermbg=red    gui=NONE guifg=#000000 guibg=#f38ba8
+  highlight DiffChange cterm=NONE ctermfg=black ctermbg=yellow gui=NONE guifg=#000000 guibg=#f9e2af
+  highlight DiffText   cterm=bold ctermfg=black ctermbg=cyan   gui=bold guifg=#000000 guibg=#89dceb
+endif

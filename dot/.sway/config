@@ -14,7 +14,7 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-set $term x-terminal-emulator
+set $term foot
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
@@ -23,13 +23,11 @@ set $menu dmenu_path | dmenu | xargs swaymsg exec --
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-#output * bg /home/ben/Pictures/pont_bambou.jpg fill
+#output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 #
 # Example configuration:
 #
 
-output HDMI1-A-1 pos 0 0 res 1920x1080
-output eDP-1 pos 1920 0 res 1600x900
 
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
@@ -37,13 +35,13 @@ output eDP-1 pos 1920 0 res 1600x900
 ### Idle configuration
 #
 # Example configuration:
-#
-exec swayidle -w \
-         timeout 600 'swaylock -f -c 000000' \
-         timeout 605 'swaymsg "output * dpms off"' \
-              resume 'swaymsg "output * dpms on"' \
-         before-sleep 'swaylock -f -c 000000'
-#
+
+#exec swayidle -w \
+#         timeout 600 'swaylock -C ~/.config/swaylock/config -f -c 000000' \
+#         timeout 605 'swaymsg "output * dpms off"' \
+#              resume 'swaymsg "output * dpms on"' \
+#         before-sleep 'swaylock -C ~/.config/swaylock/config -f -c 000000'
+
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
@@ -54,6 +52,8 @@ bindsym $mod+asterisk exec pamixer -d 5
 bindsym $mod+dollar exec pamixer -i 5
 bindsym $mod+ugrave exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
 bindsym $mod+dead_circumflex exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
+
+bindsym Print exec /home/bprevost/.bin/scrot
 
 bindsym $mod+l exec swaylock -f -c 000000
 ### Input configuration
@@ -72,9 +72,10 @@ bindsym $mod+l exec swaylock -f -c 000000
 
 input "type:keyboard" { 
     xkb_layout fr
-    xkb_variant ,nodeadkeys
     xkb_options grp:alt_shift_toggle
 }
+
+input * xkb_numlock enable
 
 ### Key bindings
 #
@@ -214,8 +215,69 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
+#
+# Status Bar:
+#
+# Read `man 5 sway-bar` for more information about this section.
 bar {
-    status_command waybar
+#    position bottom
+
+    # When the status_command prints a new line to stdout, swaybar updates.
+    # The default just shows the current date and time.
+#    status_command while date +'%Y-%m-%d %l:%M:%S %p'; do sleep 1; done
+#    status_command while ~/.config/sway/status.sh; do sleep 1; done
+    #status_command while /home/ben/Projets/sway_config/venv/bin/python3.8 /home/ben/Projets/sway_config/main.py; do sleep 1; done
+#    status_command while waybar; do sleep 1; done
+    swaybar_command waybar
+
+    # colors {
+    #     statusline #ffffff
+    #     background #323232
+    #     inactive_workspace #32323200 #32323200 #5c5c5c
+    # }
 }
 
 include /etc/sway/config.d/*
+
+
+workspace 99 output Virtual-1
+workspace 1 output HEADLESS-1
+workspace 2 output HEADLESS-1
+workspace 3 output HEADLESS-1
+workspace 4 output HEADLESS-1
+workspace 5 output HEADLESS-1
+workspace 6 output HEADLESS-2
+workspace 7 output HEADLESS-2
+workspace 8 output HEADLESS-2
+workspace 9 output HEADLESS-2
+workspace 10 output HEADLESS-2
+
+exec_always sh -c ' \
+    if ! swaymsg -t get_outputs | grep -q HEADLESS-1; then swaymsg create_output; fi; \
+    if ! swaymsg -t get_outputs | grep -q HEADLESS-2; then swaymsg create_output; fi; \
+    sleep 1; \
+    swaymsg output HEADLESS-1 resolution 1600x900 position 0 0; \
+    swaymsg output HEADLESS-2 resolution 1600x900 position 1600 0; \
+    (ss -tln | grep -q ":5900 " || systemd-run --user --scope --unit=wayvnc-headless1 -p MemoryMax=600M -p MemoryHigh=500M wayvnc -k fr -o HEADLESS-1 -S /tmp/wayvncctl-1.sock 0.0.0.0 5900) & \
+    (ss -tln | grep -q ":5901 " || systemd-run --user --scope --unit=wayvnc-headless2 -p MemoryMax=600M -p MemoryHigh=500M wayvnc -k fr -o HEADLESS-2 -S /tmp/wayvncctl-2.sock 0.0.0.0 5901) & \
+'
+
+exec sh -c ' \
+    for i in $(seq 1 30); do swaymsg -t get_outputs | grep -q HEADLESS-1 && swaymsg -t get_outputs | grep -q HEADLESS-2 && break; sleep 1; done; \
+    swaymsg "workspace 1; move workspace to output HEADLESS-1"; \
+    swaymsg "workspace 2; move workspace to output HEADLESS-1"; \
+    swaymsg "workspace 3; move workspace to output HEADLESS-1"; \
+    swaymsg "workspace 6; move workspace to output HEADLESS-2"; \
+    swaymsg "workspace 7; move workspace to output HEADLESS-2"; \
+    swaymsg "workspace 8; move workspace to output HEADLESS-2"; \
+    swaymsg "workspace 10; move workspace to output HEADLESS-2"; \
+    sleep 0.5; \
+    swaymsg "workspace 1; exec chromium --disable-gpu --restore-last-session"; \
+    swaymsg "workspace 2; exec foot; exec foot"; \
+    swaymsg "workspace 3; exec foot; exec foot"; \
+    swaymsg "workspace 6; exec obsidian"; \
+    swaymsg "workspace 7; exec keepassxc"; \
+    swaymsg "workspace 8; exec foot; exec foot"; \
+    swaymsg "workspace 10; exec foot; exec foot"; \
+    swaymsg "workspace 1"; \
+'

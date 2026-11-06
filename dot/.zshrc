@@ -70,11 +70,11 @@ source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 
-plugins=(git ssh-agent ubuntu docker nmap pep8 autopep8 pip python sudo rsync systemd tmux vim-interaction virtualenv colored-man-pages battery colorize cp github jsontools mosh repo tig vagrant kubectl gcloud aws)
+plugins=(git ssh-agent ubuntu docker nmap pep8 autopep8 pip python sudo rsync systemd tmux vim-interaction virtualenv colored-man-pages battery colorize cp jsontools mosh repo tig vagrant kubectl gcloud aws)
 
 # plugins=(git ssh-agent ubuntu docker nmap pep8 autopep8 pip python sudo rsync systemd tmux vagrant vim-interaction virtualenv colored-man-pages zsh-syntax-highlighting terraform terragrunt kubectl kube-ps1 aws battery colorize cp github helm jsontools lol mosh repo salt tig)
 
-zstyle :omz:plugins:ssh-agent identities id_rsa
+zstyle :omz:plugins:ssh-agent identities id_ecdsa
 
 source $ZSH/oh-my-zsh.sh
 
@@ -183,7 +183,12 @@ function mans {
 #export GOPATH=$HOME/Repo/go
 #source /usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh
 
-export HEDGEDOC_SERVER="https://docs.prevo.st/"
-export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.cargo/env:$PATH"
+export PATH="$HOME/.bin:$HOME/.bin/venv/bin:$PATH"
+source ~/.bin/venv/bin/activate
+#eval "$(/home/bprevost/.local/bin/mise activate zsh)"
+#echo 'eval "$(mise activate bash)"'
+#
+if [ -S "$SSH_AUTH_SOCK" ]; then
+  ln -sfn "$SSH_AUTH_SOCK" "$HOME/.ssh/agent.sock"
+fi

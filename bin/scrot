@@ -1,0 +1,4 @@
+#!/bin/sh
+f=/tmp/capture_$(date +%Y%m%d_%H%M%S).png
+region=$(slurp) || exit 1   # annulé avec Échap : on ne fait rien
+grim -g "$region" - | tee "$f" | wl-copy -t image/png

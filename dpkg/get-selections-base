@@ -1,7 +1,6 @@
 atop						
 chromium-browser				
 curl				
-ferm
 gcr						
 git						
 grim						
@@ -11,7 +10,7 @@ locate
 lsof						
 ltrace						
 qpdf						
-rxvt-unicode					
+foot
 stterm
 sway						
 swayidle

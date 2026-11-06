@@ -1,0 +1,7 @@
+setuptools<81
+pylama==7.7.1
+pyflakes==2.1.1
+pycodestyle==2.5.0
+mccabe==0.6.1
+pylint
+autopep8
