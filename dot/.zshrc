@@ -133,6 +133,8 @@ alias myip="curl -s https://www.onyphe.io/api/myip | jq .myip"
 alias pbcopy='xclip -selection clipboard'
 alias pbpaste='xclip -selection clipboard -o'
 alias meteo='curl wttr.in'
+alias o='xdg-open'
+alias yt-audio='yt-dlp -x --audio-format wav'
 
 ### Copy my ssh key to clipboard
 function myssh () {
@@ -172,6 +174,9 @@ function mfa () {
   done
 }
 
+function mans {
+  colored man $1 | less -p "^ +$2"
+}
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 #export PATH="$PATH:$HOME/.rvm/bin:$HOME/Repo/go/bin"
@@ -181,3 +186,4 @@ function mfa () {
 export HEDGEDOC_SERVER="https://docs.prevo.st/"
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/.cargo/env:$PATH"

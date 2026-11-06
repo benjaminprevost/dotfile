@@ -50,8 +50,8 @@ exec swayidle -w \
 
 ### Custom configuration
 
-bindsym $mod+asterisk exec amixer -q sset Master 5%- 
-bindsym $mod+dollar exec amixer -q sset Master 5%+ 
+bindsym $mod+asterisk exec pamixer -d 5 
+bindsym $mod+dollar exec pamixer -i 5
 bindsym $mod+ugrave exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
 bindsym $mod+dead_circumflex exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
 

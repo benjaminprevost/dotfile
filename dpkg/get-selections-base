@@ -31,3 +31,5 @@ zsh-syntax-highlighting
 libasound2-dev
 mplayer
 fonts-font-awesome
+slurp
+ncdu
